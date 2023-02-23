@@ -155,14 +155,14 @@ const Home = () => {
           <tbody>
             {Object.keys(data).map((id, index) => {
               return (
-                <tr key={id}>
+                <tr key={data[id].id}>
                   <th scope="row">{index + 1}</th>
                   <td>{data[id].name}</td>
                   <td>{data[id].email}</td>
                   <td>{data[id].contact}</td>
                   <td>{data[id].status}</td>
                   <td>
-                    <Link to={`/update/${data[id].id}`}>
+                    <Link to={`/update/${id}`}>
                       <button className="btn btn-edit">Edit</button>
                     </Link>
                     <button
@@ -173,7 +173,7 @@ const Home = () => {
                     >
                       Delete
                     </button>
-                    <Link to={`/view/${data[id].id}`}>
+                    <Link to={`/view/${id}`}>
                       <button className="btn btn-view">View</button>
                     </Link>
                   </td>
