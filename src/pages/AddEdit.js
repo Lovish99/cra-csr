@@ -82,11 +82,14 @@ const AddEdit = () => {
 
         toast.success("list added Successfully");
       } else {
-        fetch(`https://63f7496be8a73b486af48628.mockapi.io/contact/${id}`, {
-          method: "PUT",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(state),
-        })
+        fetch(
+          `https://63f7496be8a73b486af48628.mockapi.io/contact/${data[id].id}`,
+          {
+            method: "PUT",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(state),
+          }
+        )
           .then((res) => {
             if (res.ok) {
               return res.json();
