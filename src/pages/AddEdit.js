@@ -74,7 +74,7 @@ const AddEdit = () => {
           }
         });
       }
-      setTimeout(() => navigate("/"), 500);
+      navigate("/");
     }
   };
 
