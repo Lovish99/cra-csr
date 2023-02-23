@@ -3,12 +3,19 @@ import { useParams, Link } from "react-router-dom";
 import "./View.css";
 
 const View = () => {
-  const [user, setUser] = useState({});
-
+  const initialState = {
+    name: "",
+    email: "",
+    contact: "",
+    status: "",
+  };
+  const [state, setState] = useState(initialState);
+  const [data, setData] = useState({});
+  const { name, email, contact } = state;
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`https://63f7496be8a73b486af48628.mockapi.io/contact/${id}`, {
+    fetch("https://63f7496be8a73b486af48628.mockapi.io/contact", {
       method: "GET",
       headers: { "content-type": "application/json" },
     })
@@ -17,11 +24,28 @@ const View = () => {
           return res.json();
         }
       })
-      .then((data) => setUser(data))
+      .then((data) => {
+        setData(data);
+      })
       .catch((error) => {
         console.log(error);
       });
+
+    return () => {
+      setData({});
+    };
   }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      setState({ ...data[id] });
+    } else {
+      setState({ ...initialState });
+    }
+    return () => {
+      setState({ ...initialState });
+    };
+  }, [id, data]);
 
   return (
     <div style={{ marginTop: "150px" }}>
@@ -35,15 +59,15 @@ const View = () => {
           <br />
           <br />
           <strong>Name:</strong>
-          <span>{user.name}</span>
+          <span>{name}</span>
           <br />
           <br />
           <strong>Email:</strong>
-          <span>{user.email}</span>
+          <span>{email}</span>
           <br />
           <br />
           <strong>Contact:</strong>
-          <span>{user.contact}</span>
+          <span>{contact}</span>
           <br />
           <br />
           <Link to="/">
