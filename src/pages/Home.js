@@ -7,8 +7,7 @@ import { toast } from "react-toastify";
 const Home = () => {
   const [data, setData] = useState({});
 
-  const [sortedData, setSortedData] = useState([]);
-  const [sort, setSort] = useState(false);
+  const [selected, setSelected] = useState("Please Select");
 
   useEffect(() => {
     fireDb.child("contacts").on("value", (snapshot) => {
@@ -50,6 +49,7 @@ const Home = () => {
         });
         setData(sortedData);
       });
+    setSelected(`${e.target.value}`);
   };
   const handleReset = () => {
     fireDb.child("contacts").on("value", (snapshot) => {
@@ -59,6 +59,7 @@ const Home = () => {
         setData({});
       }
     });
+    setSelected("Please Select");
   };
 
   return (
