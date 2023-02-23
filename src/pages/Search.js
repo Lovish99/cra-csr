@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-import fireDb from "../firebase";
+
 import "./Search.css";
 
 const Search = () => {
@@ -12,23 +12,6 @@ const Search = () => {
 
   let query = useQuery();
   let search = query.get("name");
-
-  useEffect(() => {
-    searchData();
-  }, [search]);
-
-  const searchData = () => {
-    fireDb
-      .child("contacts")
-      .orderByChild("name")
-      .equalTo(search)
-      .on("value", (snapshot) => {
-        if (snapshot.val()) {
-          const data = snapshot.val();
-          setData(data);
-        }
-      });
-  };
 
   console.log(search);
 

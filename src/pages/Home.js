@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import fireDb from "../firebase";
 import { Link } from "react-router-dom";
 import "./Home.css";
 import { toast } from "react-toastify";
@@ -10,54 +9,98 @@ const Home = () => {
   const [selected, setSelected] = useState("Please Select");
 
   useEffect(() => {
-    fireDb.child("contacts").on("value", (snapshot) => {
-      if (snapshot.val() !== null) {
-        setData({ ...snapshot.val() });
-      } else {
-        setData({});
-      }
-    });
+    fetch("https://63f7496be8a73b486af48628.mockapi.io/contact", {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     return () => {
       setData({});
     };
   }, []);
 
-  const onDelete = (id) => {
+  const onDelete = async (id) => {
     if (
       window.confirm("Are you sure that you wanted to delete that contact ?")
     ) {
-      fireDb.child(`contacts/${id}`).remove((err) => {
-        if (err) {
-          toast.error(err);
-        } else {
-          toast.success("Contact deleted Succeddfully");
-        }
-      });
+      await fetch(`https://63f7496be8a73b486af48628.mockapi.io/contact/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      await fetch("https://63f7496be8a73b486af48628.mockapi.io/contact", {
+        method: "GET",
+        headers: { "content-type": "application/json" },
+      })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+        })
+        .then((data) => setData(data))
+        .catch((error) => {
+          console.log(error);
+        });
+
+      toast.success("Contact deleted Successfully");
     }
   };
 
-  const handleChange = (e) => {
-    fireDb
-      .child("contacts")
-      .orderByChild(`${e.target.value}`)
-      .on("value", (snapshot) => {
-        let sortedData = [];
-        snapshot.forEach((snap) => {
-          sortedData.push(snap.val());
-        });
-        setData(sortedData);
+  const handleChange = async (e) => {
+    setSelected(e.target.value);
+    const url = new URL("https://63f7496be8a73b486af48628.mockapi.io/contact");
+
+    url.searchParams.append("sortBy", e.target.value);
+
+    await fetch(url, {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    setSelected(`${e.target.value}`);
   };
-  const handleReset = () => {
-    fireDb.child("contacts").on("value", (snapshot) => {
-      if (snapshot.val() !== null) {
-        setData({ ...snapshot.val() });
-      } else {
-        setData({});
-      }
-    });
+  const handleReset = async () => {
+    await fetch("https://63f7496be8a73b486af48628.mockapi.io/contact", {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((data) => setData(data))
+      .catch((error) => {
+        console.log(error);
+      });
+
     setSelected("Please Select");
   };
 
@@ -95,10 +138,6 @@ const Home = () => {
             {" "}
             Loading ....
           </div>
-          {/* <div> Please Click here to add ToDo</div>
-          <Link to={`/add`}>
-            <button className="btn btn-edit">Click Here</button>
-          </Link> */}
         </div>
       ) : (
         <table className="styled-table">
@@ -123,18 +162,18 @@ const Home = () => {
                   <td>{data[id].contact}</td>
                   <td>{data[id].status}</td>
                   <td>
-                    <Link to={`/update/${id}`}>
+                    <Link to={`/update/${data[id].id}`}>
                       <button className="btn btn-edit">Edit</button>
                     </Link>
                     <button
                       className="btn btn-delete"
                       onClick={() => {
-                        onDelete(id);
+                        onDelete(data[id].id);
                       }}
                     >
                       Delete
                     </button>
-                    <Link to={`/view/${id}`}>
+                    <Link to={`/view/${data[id].id}`}>
                       <button className="btn btn-view">View</button>
                     </Link>
                   </td>

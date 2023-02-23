@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import fireDb from "../firebase";
+import { useParams, Link } from "react-router-dom";
 import "./View.css";
 
 const View = () => {
@@ -9,19 +8,20 @@ const View = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fireDb
-      .child(`contacts/${id}`)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          setUser({ ...snapshot.val() });
-        } else {
-          setUser({});
+    fetch(`https://63f7496be8a73b486af48628.mockapi.io/contact/${id}`, {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
         }
+      })
+      .then((data) => setUser(data))
+      .catch((error) => {
+        console.log(error);
       });
   }, [id]);
-
-  console.log("user " + user);
 
   return (
     <div style={{ marginTop: "150px" }}>

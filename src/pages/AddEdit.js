@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./AddEdit.css";
-import fireDb from "../firebase";
 import { toast } from "react-toastify";
 
 const initialState = {
@@ -22,13 +21,21 @@ const AddEdit = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fireDb.child("contacts").on("value", (snapshot) => {
-      if (snapshot.val() !== null) {
-        setData({ ...snapshot.val() });
-      } else {
-        setData({});
-      }
-    });
+    fetch("https://63f7496be8a73b486af48628.mockapi.io/contact", {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      })
+      .then((data) => {
+        setData(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     return () => {
       setData({});
@@ -58,21 +65,38 @@ const AddEdit = () => {
       toast.error("Please provide value in each input field");
     } else {
       if (!id) {
-        fireDb.child("contacts").push(state, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("list added Successfully");
-          }
-        });
+        fetch("https://63f7496be8a73b486af48628.mockapi.io/contact", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+
+          body: JSON.stringify(state),
+        })
+          .then((res) => {
+            if (res.ok) {
+              return res.json();
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        toast.success("list added Successfully");
       } else {
-        fireDb.child(`contacts/${id}`).set(state, (err) => {
-          if (err) {
-            toast.error(err);
-          } else {
-            toast.success("list updated Successfully");
-          }
-        });
+        fetch(`https://63f7496be8a73b486af48628.mockapi.io/contact/${id}`, {
+          method: "PUT",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(state),
+        })
+          .then((res) => {
+            if (res.ok) {
+              return res.json();
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        toast.success("list updated Successfully");
       }
       navigate("/");
     }
