@@ -98,7 +98,10 @@ const AddEdit = () => {
 
         toast.success("list updated Successfully");
       }
-      navigate("/");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     }
   };
 
