@@ -85,7 +85,7 @@ const Home = () => {
           Reset
         </button>
       </div>
-      {data.length === 0 ? (
+      {Object.keys(data).length === 0 ? (
         <div
           style={{
             margin: "0 25%",
