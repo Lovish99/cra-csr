@@ -93,12 +93,12 @@ const Home = () => {
         >
           <div style={{ margin: "20px 0px", fontSize: "40px" }}>
             {" "}
-            No Todo Found
+            Loading ....
           </div>
-          <div> Please Click here to add ToDo</div>
+          {/* <div> Please Click here to add ToDo</div>
           <Link to={`/add`}>
             <button className="btn btn-edit">Click Here</button>
-          </Link>
+          </Link> */}
         </div>
       ) : (
         <table className="styled-table">
