@@ -42,7 +42,6 @@ const Home = () => {
       .child("contacts")
       .orderByChild(`${e.target.value}`)
       .on("value", (snapshot) => {
-        console.log(e);
         let sortedData = [];
         snapshot.forEach((snap) => {
           sortedData.push(snap.val());
@@ -86,49 +85,65 @@ const Home = () => {
           Reset
         </button>
       </div>
+      {data.length === 0 ? (
+        <div
+          style={{
+            margin: "0 25%",
+          }}
+        >
+          <div style={{ margin: "20px 0px", fontSize: "40px" }}>
+            {" "}
+            No Todo Found
+          </div>
+          <div> Please Click here to add ToDo</div>
+          <Link to={`/add`}>
+            <button className="btn btn-edit">Click Here</button>
+          </Link>
+        </div>
+      ) : (
+        <table className="styled-table">
+          <thead>
+            <tr>
+              <th style={{ textAlign: "center" }}>No.</th>
+              <th style={{ textAlign: "center" }}>Name</th>
+              <th style={{ textAlign: "center" }}>Email</th>
+              <th style={{ textAlign: "center" }}>Contact</th>
+              <th style={{ textAlign: "center" }}>Status</th>
+              <th style={{ textAlign: "center" }}>Action</th>
+            </tr>
+          </thead>
 
-      <table className="styled-table">
-        <thead>
-          <tr>
-            <th style={{ textAlign: "center" }}>No.</th>
-            <th style={{ textAlign: "center" }}>Name</th>
-            <th style={{ textAlign: "center" }}>Email</th>
-            <th style={{ textAlign: "center" }}>Contact</th>
-            <th style={{ textAlign: "center" }}>Status</th>
-            <th style={{ textAlign: "center" }}>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {Object.keys(data).map((id, index) => {
-            return (
-              <tr key={id}>
-                <th scope="row">{index + 1}</th>
-                <td>{data[id].name}</td>
-                <td>{data[id].email}</td>
-                <td>{data[id].contact}</td>
-                <td>{data[id].status}</td>
-                <td>
-                  <Link to={`/update/${id}`}>
-                    <button className="btn btn-edit">Edit</button>
-                  </Link>
-                  <button
-                    className="btn btn-delete"
-                    onClick={() => {
-                      onDelete(id);
-                    }}
-                  >
-                    Delete
-                  </button>
-                  <Link to={`/view/${id}`}>
-                    <button className="btn btn-view">View</button>
-                  </Link>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          <tbody>
+            {Object.keys(data).map((id, index) => {
+              return (
+                <tr key={id}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{data[id].name}</td>
+                  <td>{data[id].email}</td>
+                  <td>{data[id].contact}</td>
+                  <td>{data[id].status}</td>
+                  <td>
+                    <Link to={`/update/${id}`}>
+                      <button className="btn btn-edit">Edit</button>
+                    </Link>
+                    <button
+                      className="btn btn-delete"
+                      onClick={() => {
+                        onDelete(id);
+                      }}
+                    >
+                      Delete
+                    </button>
+                    <Link to={`/view/${id}`}>
+                      <button className="btn btn-view">View</button>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
 
       <br />
     </div>
