@@ -76,11 +76,17 @@ const AddEdit = () => {
               return res.json();
             }
           })
+          .then((data) => {
+            // setTimeout(() => {
+            navigate("/");
+            toast.success("list added Successfully");
+            // }, 1000);
+          })
           .catch((error) => {
             console.log(error);
           });
 
-        toast.success("list added Successfully");
+        // toast.success("list added Successfully");
       } else {
         fetch(
           `https://63f7496be8a73b486af48628.mockapi.io/contact/${data[id].id}`,
@@ -95,16 +101,22 @@ const AddEdit = () => {
               return res.json();
             }
           })
+          .then((data) => {
+            // setTimeout(() => {
+            navigate("/");
+            toast.success("list updated Successfully");
+            //  }, 1000);
+          })
           .catch((error) => {
             console.log(error);
           });
 
-        toast.success("list updated Successfully");
+        //  toast.success("list updated Successfully");
       }
 
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      // setTimeout(() => {
+      //   navigate("/");
+      // }, 1000);
     }
   };
 
