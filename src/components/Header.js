@@ -50,6 +50,27 @@ const Header = () => {
             About
           </p>
         </Link>
+        <Link to="/InfiniteScroll">
+          <p
+            className={`${activeTab === "About" ? "active" : ""}`}
+            onClick={() => {
+              setActiveTab("About");
+            }}
+          >
+            Infinite Scroll
+          </p>
+        </Link>
+
+        <Link to="/InfiniteScroll2">
+          <p
+            className={`${activeTab === "About" ? "active" : ""}`}
+            onClick={() => {
+              setActiveTab("About");
+            }}
+          >
+            Infinite Scroll 2
+          </p>
+        </Link>
       </div>
     </div>
   );

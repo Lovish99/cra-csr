@@ -9,6 +9,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import About from "./pages/About";
 import Search from "./pages/Search";
+import InfiniteScroll from "./pages/InfiniteScroll";
+import PageInfiniteScroll from "./pages/InfiniteScroll2";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route path="/view/:id" element={<View />} />
           <Route path="/about" element={<About />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/InfiniteScroll" element={<InfiniteScroll />} />
+          <Route path="/InfiniteScroll2" element={<PageInfiniteScroll />} />
         </Routes>
       </div>
     </BrowserRouter>
