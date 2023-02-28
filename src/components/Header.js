@@ -52,7 +52,7 @@ const Header = () => {
         </Link>
         <Link to="/InfiniteScroll">
           <p
-            className={`${activeTab === "About" ? "active" : ""}`}
+            //className={`${activeTab === "About" ? "active" : ""}`}
             onClick={() => {
               setActiveTab("About");
             }}
@@ -63,7 +63,7 @@ const Header = () => {
 
         <Link to="/InfiniteScroll2">
           <p
-            className={`${activeTab === "About" ? "active" : ""}`}
+            // className={`${activeTab === "About" ? "active" : ""}`}
             onClick={() => {
               setActiveTab("About");
             }}
